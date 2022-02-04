@@ -1,5 +1,5 @@
-/****** SSMS 鐨� SelectTopNRows 鍛戒护鐨勮剼鏈�  ******/
---------20200204
+/****** SSMS 閻拷 SelectTopNRows 閸涙垝鎶ら惃鍕壖閺堬拷  ******/
+--------20200204  v20
 
   
 SELECT TOP (1000) *
@@ -17,7 +17,7 @@ SELECT TOP (1000) *
  
  DROP  TABLE    #LIST001
 
---鎵惧嚭combine in and out 鐨勬暟鎹�
+--閹垫儳鍤璫ombine in and out 閻ㄥ嫭鏆熼幑锟�
 SELECT  A.stock_check_combine_in_source_id,B.id AS ID_out,A.id  AS ID_in
 into  #LIST001
 from  PR01_Planner_upload A   inner  join  PR01_Planner_upload  B  ON A.[stock_check_combine_in_source_id]=B.id
@@ -30,7 +30,7 @@ AND  A.ID  IN (SELECT ID FROM #LIST0099)
   EXEC  [dbo].[PR_Purchase_Package_sub_996_Renew_PR_Node] '445508,445509,445513,445514,445528,445529'
 
  BEGIN  TRAN
----鏇存柊group 鏁版嵁 
+---閺囧瓨鏌奼roup 閺佺増宓� 
  update  PR01_Planner_upload
 set [Upside_GROUP_ID]='C_'+CONVERT(VARCHAR(10),BB.ID_IN)+'_'+CONVERT(VARCHAR(10),BB.ID_OUT)
 --SELECT *
@@ -46,7 +46,7 @@ where  1=1
 --AND  AA.ID NOT IN (SELECT ID FROM #LIST04)
 
 
----鏇碿ombine 鏂瑰悜
+---閺囩⒖ombine 閺傜懓鎮�
 UPDATE  PR01_Planner_upload
 SET  Upside_Type_flag=2,upside_out_target_pr_id=NULL,upside_out_qty=0,UPSIDE_IN_QTY=Final_Approve_qty
 ,order_type='NB80'
@@ -66,7 +66,7 @@ AND  AA.ID  IN (SELECT ID_out FROM #LIST001)
 --SELECT * FROM PR01_Planner_upload
 
 
----瀵逛簬宸茬粡璧板畬瀹℃壒锛岀敓鎴愭柊鐨勮ˉ宸� PR锛�,鐘舵��  52
+---鐎甸�涚艾瀹歌尙绮＄挧鏉跨暚鐎光剝澹掗敍宀�鏁撻幋鎰煀閻ㄥ嫯藟瀹革拷 PR閿涳拷,閻樿埖锟斤拷  52
 
 insert  into  PR01_Planner_upload
 ([PR#]
@@ -319,7 +319,7 @@ AND  ID  IN (SELECT ID_in FROM  #LIST001)
 
 -
 
-----鏇存柊combine in 鐨凱R鐨勭姸鎬� 
+----閺囧瓨鏌奵ombine in 閻ㄥ嚤R閻ㄥ嫮濮搁幀锟� 
 
 update   AA
 SET  [stock_check_combine_in_qty]=BB.[stock_check_combine_OUT_qty]
@@ -332,7 +332,7 @@ and  id in  (SELECT  ID_IN FROM  #LIST001)
 
 
 
-----宸茬粡瀹℃壒瀹岀殑
+----瀹歌尙绮＄�光剝澹掔�瑰瞼娈�
 UPDATE   PR01_Planner_upload
 SET   Status_upside=52,status=52
 WHERE   id IN (SELECT  ID_OUT FROM  #LIST001)
@@ -341,7 +341,7 @@ WHERE   id IN (SELECT  ID_OUT FROM  #LIST001)
 
 
 
- ---璁＄畻Qty_Combine_Group
+ ---鐠侊紕鐣籕ty_Combine_Group
   update  [B_GLB_NB_PR].[dbo].[PR01_Planner_upload]
   set  Qty_Combine_Group=bb.ttl
   FROM  [B_GLB_NB_PR].[dbo].[PR01_Planner_upload] aa inner   join 
@@ -350,7 +350,7 @@ WHERE   id IN (SELECT  ID_OUT FROM  #LIST001)
   WHERE    id  IN (SELECT  ID_IN FROM  #LIST001)
   
 
-  ----璁板綍鏃剁偣鏄惁鏀寔涓嶆弧绠�
+  ----鐠佹澘缍嶉弮鍓佸仯閺勵垰鎯侀弨顖涘瘮娑撳秵寮х粻锟�
 update  PR01_Planner_upload
 set  [half_carton_support]= case when bb.Half_carton_support ='yes' then 1 else 0 end 
 FROM PR01_Planner_upload aa left join [dbo].[VW_PR34_unfilled_carton_support_PN_List] bb
